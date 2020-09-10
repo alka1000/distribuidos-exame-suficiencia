@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mercado Ações</title>
+  <script src="jsencrypt.js"></script>
+</head>
+<body>
+  <!-- POST /bolsas/ordem-compra/{idCliente} -->
+  <a href="index.html">Home</a>
+  <h2>Cadastro de Ordem de compra de ação:</h2>
+  idCliente: <input type="text" id="idCliente"/><br/>
+  idAcao: <input type="text" id="idAcao"/><br/>
+  quantidade: <input type="number" id="quantidade"/><br/>
+  valor: <input type="number" id="valor"/><br/>
+  prazo: <input type="text" id="prazo"/><br/>
+  <button onclick="cadastrar()">Cadastrar</button>
+  <script>
+    function cadastrar(){
+      var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var ordem = document.getElementById("idAcao").value + ";" + document.getElementById("valor").value + ";" + document.getElementById("quantidade").value + ";" + document.getElementById("prazo").value;
+        var crypt = new JSEncrypt();
+        crypt.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD0UkjWJaAQ+yvZNRZch2hFuFMtRj7L6uJ/8Aua3m/UAcxKP0q1MybR0tiPggxQJiCZyTQ5LTPtbzgoziPaCc4qCMtkYmEHkYCaCrFn8tJh/EcpUc5RTtSyW2qz8oTg52A6cH/2cV+UMUmX9UBy4Y02kFTsF4sMA4nfBzUK2Ry9KQIDAQAB");
+        
+
+        var raw = JSON.stringify({"ordem":crypt.encrypt(ordem)});
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/mercado-bolsas/ws/bolsas/ordem-compra/"+document.getElementById("idCliente").value, requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+      }
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mercado Ações</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  
+</head>
+<body>
+  <!-- GET /bolsas/cotacoes/{idCliente} -->
+  <a href="index.html">Home</a>
+  <h2>Consulta de ação na lista de cotações:</h2>
+  idCliente: <input type="text" id="idCliente"/><br/>
+  <button onclick="consultar()">Consultar</button>
+  <div id="resultado-consulta"> </div>
+  <script>
+    function consultar(){
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://localhost:8080/mercado-bolsas/ws/bolsas/cotacoes/"+document.getElementById("idCliente").value, requestOptions)
+        .then(response => response.text())
+        .then(result => $("#resultado-consulta").html(result))
+        .catch(error => console.log('error', error));
+    }
+  </script>
+</body>
+</html>

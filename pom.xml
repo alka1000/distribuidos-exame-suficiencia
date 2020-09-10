@@ -11,7 +11,7 @@
     <!-- Add the rest of the POM below here. -->
     <!-- tag::coordinates[] -->
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>SseRadioSample</artifactId>
+    <artifactId>mercado-bolsas</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <!-- end::coordinates[] -->
@@ -45,20 +45,12 @@
              <version>1.0</version>
              <scope>provided</scope>
         </dependency>
-        <!-- tag::dependencies_test[] -->
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::dependencies_test[] -->
+		    <groupId>com.opencsv</groupId>
+		    <artifactId>opencsv</artifactId>
+		    <version>4.2</version>
+		</dependency>
+
     </dependencies>
     <!-- end::dependencies[] -->
     <!-- tag::build[] -->

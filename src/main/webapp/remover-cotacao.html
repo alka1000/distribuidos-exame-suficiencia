@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mercado Ações</title>
+</head>
+<body>
+  <!-- DELETE /bolsas/cotacoes/{idCliente}/{idAcao} -->
+  <a href="index.html">Home</a>
+  <h2>Cadastro de ação na lista de cotações:</h2>
+  idCliente: <input type="text" id="idCliente"/><br/>
+  idAcao: <input type="text" id="idAcao"/><br/>
+  <button onclick="remover()">Remover</button>
+  <script>
+    function remover(){
+      var requestOptions = {
+        method: 'DELETE',
+        redirect: 'follow'
+      };
+
+      fetch("http://localhost:8080/mercado-bolsas/ws/bolsas/cotacoes/"+document.getElementById("idCliente").value+"/"+document.getElementById("idAcao").value, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+      }
+  </script>
+</body>
+</html>

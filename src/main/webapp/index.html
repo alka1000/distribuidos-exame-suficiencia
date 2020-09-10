@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SSE Radio - Now Playing</title>
+  <title>Mercado Ações</title>
 </head>
 <body>
-  <h2>Now Playing:</h2>
-  <div id="song">Song: </div>
-  <div id="artist">Artist: </div>
-  <script>
-    var source = new EventSource('radio/songData');
-
-    source.onmessage = function(e) {
-        var song = JSON.parse(e.data);
-        document.getElementById("song").innerHTML = 'Song: ' + song.title;
-        document.getElementById("artist").innerHTML = 'Artist: ' + song.artist;
-      };
-  </script>
+  <a href="cadastro-cotacao.html">Cadastro de ação na lista de cotações</a>
+  <br/>
+  <a href="cadastro-limite.html">Cadastro de limites de ganhos e perdas de uma ação</a>
+  <br/>
+  <a href="cadastro-ordem-compra.html">Cadastro de Ordens de compra de ação</a>
+  <br/>
+  <a href="cadastro-ordem-venda.html">Cadastro de Ordens de venda de ação</a>
+  <br/>
+  <a href="consulta-cotacao.html">Consulta da lista de cotações</a>
+  <br/>
+  <a href="notificacoes-limites.html">Notificações de limites de ganhos e perdas</a>
+  <br/>
+  <a href="notificacoes-ordens-compra-venda.html">Notificações de ordens de compra e venda</a>
+  <br/>
+  <a href="remover-cotacao.html">Remover ação da lista de cotações</a>
 </body>
 </html>

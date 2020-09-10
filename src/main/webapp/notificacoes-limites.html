@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mercado Ações</title>
+</head>
+<body>
+  <!-- GET /bolsas/cotacoes/limites/{idCliente}/ -->
+  <a href="index.html">Home</a>
+  <h2>Limite atingido:</h2>
+  <div id="acao">Ação: </div>
+  <div id="cotacao">Cotação: </div>
+  <div id="limiteGanho">Limite Ganho: </div>
+  <div id="limitePerda">Limite Perda: </div>
+  <script>
+    var source = new EventSource('ws/bolsas/cotacoes/limites/amir/');
+
+    source.onmessage = function(e) {
+        var acao = JSON.parse(e.data);
+        document.getElementById("acao").innerHTML = 'Ação: ' + acao.acao.id;
+        document.getElementById("cotacao").innerHTML = 'Cotação: ' + acao.acao.cotacao;
+        document.getElementById("limiteGanho").innerHTML = 'Limite Ganho: ' + acao.limiteGanho;
+        document.getElementById("limitePerda").innerHTML = 'Limite Perda: ' + acao.limitePerda;
+      };
+  </script>
+</body>
+</html>

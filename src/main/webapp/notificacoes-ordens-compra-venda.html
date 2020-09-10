@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mercado Ações</title>
+</head>
+<body>
+  <!-- GET /bolsas/ordens/{idCliente}/ -->
+  <a href="index.html">Home</a>
+  <h2>Transação de compra/venda de ação realizada:</h2>
+  <div id="acao">Ação: </div>
+  <div id="quantidade">Quantidade: </div>
+  <div id="valorTotal">Valor Total: </div>
+  <script>
+    var source = new EventSource('ws/bolsas/cotacoes/limites/amir/');
+
+    source.onmessage = function(e) {
+        var acao = JSON.parse(e.data);
+        document.getElementById("acao").innerHTML = 'Ação: ' + acao.idAcao;
+        document.getElementById("quantidade").innerHTML = 'Quantidade: ' + acao.quantidade;
+        document.getElementById("valorTotal").innerHTML = 'Valor Total: ' + acao.valor;
+      };
+  </script>
+</body>
+</html>
