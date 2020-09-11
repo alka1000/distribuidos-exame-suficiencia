@@ -7,12 +7,15 @@
   <!-- GET /bolsas/cotacoes/limites/{idCliente}/ -->
   <a href="index.html">Home</a>
   <h2>Limite atingido:</h2>
+  idCliente: <input type="text" id="idCliente"/><br/>
+  <button onclick="consultar()">Consultar</button><br/>
   <div id="acao">Ação: </div>
   <div id="cotacao">Cotação: </div>
   <div id="limiteGanho">Limite Ganho: </div>
   <div id="limitePerda">Limite Perda: </div>
   <script>
-    var source = new EventSource('ws/bolsas/cotacoes/limites/amir/');
+  function consultar(){
+    var source = new EventSource('ws/bolsas/cotacoes/limites/'+document.getElementById("idCliente").value);
 
     source.onmessage = function(e) {
         var acao = JSON.parse(e.data);
@@ -21,6 +24,7 @@
         document.getElementById("limiteGanho").innerHTML = 'Limite Ganho: ' + acao.limiteGanho;
         document.getElementById("limitePerda").innerHTML = 'Limite Perda: ' + acao.limitePerda;
       };
+  }
   </script>
 </body>
 </html>

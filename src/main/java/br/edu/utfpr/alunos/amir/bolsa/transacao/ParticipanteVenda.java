@@ -16,9 +16,6 @@ public class ParticipanteVenda extends Participante {
 			return false;
 		}
 		
-		synchronized (arquivosTransacoes) {
-			arquivosTransacoes.remove(transacao.getOrdemVenda().getIdCliente());
-		}
 		
 		List<ClienteAcao> acoesCliente = TratamentoDadosCSV.getAcoesCliente(transacao.getOrdemVenda().getIdCliente() + "_TEMP");
 		
@@ -31,6 +28,9 @@ public class ParticipanteVenda extends Participante {
 		
 		TratamentoDadosCSV.deletaArquivo(transacao.getOrdemVenda().getIdCliente() + "_TEMP");
 		Logger.writeLog("TRANSACAO DE VENDA " + transacao + " - EFETIVADA ");
+		synchronized (arquivosTransacoes) {
+			arquivosTransacoes.remove(transacao.getOrdemVenda().getIdCliente());
+		}
 		return true;
 	}
 	

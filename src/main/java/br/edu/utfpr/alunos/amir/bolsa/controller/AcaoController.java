@@ -172,13 +172,20 @@ public class AcaoController {
     			}
             	List<ClienteCotacaoAcao> listaCotacao = listaCotacoes.get(idCliente);
                 while (true) {
+                	try {
+						Thread.currentThread();
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 	for (ClienteCotacaoAcao cotacao : listaCotacao) {
                 		if (
                 			(cotacao.getLimiteGanho() != null && cotacao.getAcao().getCotacao() > cotacao.getLimiteGanho())
                 				|| (cotacao.getLimitePerda() != null && cotacao.getAcao().getCotacao() < cotacao.getLimitePerda())) {
 	                		OutboundSseEvent event = sse.newEventBuilder()
 	                				.mediaType(MediaType.APPLICATION_JSON_TYPE)
-	                				.data(ClienteCotacaoAcao.class, cotacao)
+	                				.data(ClienteCotacaoAcao.class, new ClienteCotacaoAcao(cotacao.getIdCliente(), cotacao.getAcao(), cotacao.getLimiteGanho()*1+0, cotacao.getLimitePerda()*1+0))
 	                				.build();
 	                		eventSink.send(event);
 	                		cotacao.setLimiteGanho(null);
@@ -192,7 +199,6 @@ public class AcaoController {
 	}
 
 	public void adicionaOrdemCompra(Ordem ordem) {
-		System.out.println(ordem);
 		listaOrdensCompra.add(ordem);
 		synchronized (threadCompraVendaAcoesRunning) {
 			if (!threadCompraVendaAcoesRunning) {
@@ -204,7 +210,6 @@ public class AcaoController {
 	}
 
 	public void adicionaOrdemVenda(Ordem ordem) {
-		System.out.println(ordem);
 		listaOrdensVenda.add(ordem);
 		synchronized (threadCompraVendaAcoesRunning) {
 			if (!threadCompraVendaAcoesRunning) {
@@ -220,6 +225,13 @@ public class AcaoController {
             @Override
             public void run() {
                 while (true) {
+                	try {
+						Thread.currentThread();
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 	if (novaOrdemCompraVenda) {
 	                	List<Ordem> listaOrdensCompraVencidas = new ArrayList<Ordem>();
 	                	List<Ordem> listaOrdensVendaVencidas = new ArrayList<Ordem>();
@@ -232,7 +244,6 @@ public class AcaoController {
 	                						if (Calendar.getInstance().before(ordemVenda.getPrazo())) {
 	                							if (ordemCompra.getAcao().equals(ordemVenda.getAcao())) {
 	                								if (ordemCompra.getPreco().equals(ordemVenda.getPreco())) {
-	                									System.out.println("3");
 	                									ordensQueSeraoExecutadas.add(ordemCompra);
 	                									ordensQueSeraoExecutadas.add(ordemVenda);
 	                									break;
@@ -252,10 +263,13 @@ public class AcaoController {
 	                		}
 						}
 	                	if (!ordensQueSeraoExecutadas.isEmpty()) {
-	                		System.out.println("2");
 	                		Ordem ordemCompra = ordensQueSeraoExecutadas.remove(0);
 	                		Ordem ordemVenda = ordensQueSeraoExecutadas.remove(0);
+	                		listaOrdensCompra.remove(ordemCompra);
+	                		listaOrdensVenda.remove(ordemVenda);
 	                		realizarCompraVendaAcao(ordemCompra, ordemVenda);
+	                	} else {
+	                		novaOrdemCompraVenda = false;
 	                	}
 	                	for (Ordem ordem : listaOrdensCompraVencidas) {
 	                		listaOrdensCompra.remove(ordem);
@@ -263,13 +277,11 @@ public class AcaoController {
 	                	for (Ordem ordem : listaOrdensVendaVencidas) {
 	                		listaOrdensVenda.remove(ordem);
 	                	}
-	                	novaOrdemCompraVenda = false;
                 	}
                 }
             }
 
 			private void realizarCompraVendaAcao(Ordem ordemCompra, Ordem ordemVenda) {
-				System.out.println("1");
 				if (Coordenador.abrirTransacao(ordemCompra, ordemVenda)) {
 					Integer quantidadeTransicionada = Math.min(ordemCompra.getQuantidade(), ordemVenda.getQuantidade());
 					ordemCompra.setQuantidade(ordemCompra.getQuantidade() - quantidadeTransicionada);
@@ -313,6 +325,13 @@ public class AcaoController {
 				}
             	List<OrdemTransicionada> listaOrdens = listaOrdensTransicionadas.get(idCliente);
                 while (true) {
+                	try {
+						Thread.currentThread();
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 	if (!listaOrdens.isEmpty()) {
 	            		OrdemTransicionada ordem = listaOrdens.remove(0);
 	    		  		OutboundSseEvent event = sse.newEventBuilder()
